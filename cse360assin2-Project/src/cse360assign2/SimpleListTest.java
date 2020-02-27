@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 //Test cases for SimpleList.java
 class SimpleListTest {
-
+	
 	//Tests if the list is initialized
 	@Test
 	void testSimpleList() {

@@ -6,6 +6,7 @@
 //				 information can be returned. 
 
 package cse360assign2;
+import java.lang.Math;
 
 /**
  * SimpleClass is the base class for a ten element list and its methods.
@@ -24,7 +25,7 @@ public class SimpleList {
 
 	private int[] list;
 	private int count;
-
+	
 	/**
 	 * The sole constructor of the SimpleList {@link class}.
 	 * <p>
@@ -33,32 +34,38 @@ public class SimpleList {
 	public SimpleList() {
 		list = new int[10];
 
-		for (int index = 0; index < 10; index++)
-			list[index] = 0;
+		//for (int index = 0; index < 10; index++)
+		//	list[index] = 0;
 
 		count = 0;
 	}
 
 	/**
-	 * Adds an element to the first index of the list.
+	 * Adds an element to the first index of the list and increases the size
+	 * if necessary.
 	 * <p>
 	 * This method has no return value and will shift all of the elements in
 	 * the list to the right by one before adding the value argument. If all
-	 * 10 indices are full, the last value will be removed from the list. The
-	 * search method is used to determine the existence of the value.
+	 * of the indices have elements, the size of the array is increased by
+	 * 50%, rounded down to the lowest integer.
 	 * 
 	 * @param value	the value that will be added to the beginning of the list
-	 * @see			#search(int)
 	 */
 	
 	public void add(int value) {
+		if (count == list.length) {
+			int[] biggerList = new int[(int) Math.round(Math.floor(list.length * 1.5f))];
+			for (int index = 0; index < count; index++)
+				biggerList[index] = list[index];
+			list = biggerList;
+		}
 		for (int index = list.length - 2; index > -1; index--) {
 			list[index + 1] = list[index];
 		}
 
 		list[0] = value;
 
-		if (count < 10)
+		if (count < list.length)
 			count++;
 	}
 
@@ -66,21 +73,31 @@ public class SimpleList {
 	 * Removes a specified element from the list.
 	 * <p>
 	 * This method has no return value and will shift all of the elements
-	 * in the list proceeding the removed element to the left by one.
-	 * If the element does not exist, nothing will happen
+	 * in the list proceeding the removed element to the left by one. If the
+	 * array is more than 25% empty, the size is decreased by 25%  rounded down
+	 * to the nearest integer. If the element does not exist, nothing will happen
 	 * 
 	 * @param value	the value that will be removed from the list
+	 * @see			#search(int)
 	 */
 	public void remove(int value) {
 		int valueIndex = search(value);
-
+		
 		if (valueIndex != -1) {
 			for (int index = valueIndex; index < count - 1; index++) {
 				list[index] = list[index + 1];
-				list[9] = 0;
+				list[list.length - 1] = 0;
 			}
 
 			count--;
+		}
+		float emptyRatio = (float)(list.length - count) / (float)list.length;
+		if (emptyRatio > 0.25 && list.length > 1)
+		{
+			int[] smallerList = new int[(int)Math.floor(list.length * 0.75f)];
+			for (int index = 0; index < smallerList.length; index++)
+				smallerList[index] = list[index];
+			list = smallerList;
 		}
 	}
 
