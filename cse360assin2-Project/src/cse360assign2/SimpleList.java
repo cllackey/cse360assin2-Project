@@ -11,12 +11,12 @@ import java.lang.Math;
 /**
  * SimpleClass is the base class for a ten element list and its methods.
  * A SimpleClass object is capable of adding elements, removing elements,
- * returning the number of elements, searching for an element, and listing
- * the elements in a String.
+ * returning the number of elements, searching for an element, listing
+ * the elements in a String, appending elements, and getting the first or
+ * last element in the list.
  * <p>
- * The size of the list is based on the number of values added to it, and no
- * more than 10 elements can be added. If more 10 elements are added, the last
- * elements are removed from the list to keep the length at 10.
+ * The size of the list is based on the number of values added to it, and
+ * will change in size to increase or decrease as necessary.
  * 
  * @author Caden Lackey
  *
@@ -51,10 +51,9 @@ public class SimpleList {
 	 * 
 	 * @param value	the value that will be added to the beginning of the list
 	 */
-	
 	public void add(int value) {
 		if (count == list.length) {
-			int[] biggerList = new int[(int) Math.round(Math.floor(list.length * 1.5f))];
+			int[] biggerList = new int[(int)Math.floor(list.length * 1.5f)];
 			for (int index = 0; index < count; index++)
 				biggerList[index] = list[index];
 			list = biggerList;
@@ -65,8 +64,30 @@ public class SimpleList {
 
 		list[0] = value;
 
-		if (count < list.length)
-			count++;
+		count++;
+	}
+	
+	/**
+	 * Adds an element to the end list and increases the size
+	 * if necessary.
+	 * <p>
+	 * This method has no return value and adds the value to the end. If all
+	 * of the indices have elements, the size of the array is increased by
+	 * 50%, rounded down to the lowest integer.
+	 * 
+	 * @param value	the value that will be added to the end of the list
+	 */
+	public void append(int value)
+	{
+		if (count == list.length) {
+			int[] biggerList = new int[(int)Math.floor(list.length * 1.5f)];
+			for (int index = 0; index < count; index++)
+				biggerList[index] = list[index];
+			list = biggerList;
+		}
+		list[count + 1] = value;
+		
+		count++;
 	}
 
 	/**
@@ -151,5 +172,50 @@ public class SimpleList {
 				searchIndex = index;
 
 		return searchIndex;
+	}
+	
+	/**
+	 * Returns the first element in the list.
+	 * <p>
+	 * This method will return the first value in the list. If there are no
+	 * values in the list, then the method will return -1.
+	 * 
+	 * @return	the first value in the list. If empty, then returns -1.
+	 */
+	public int first()
+	{
+		int returnValue = -1;
+		if (count > 0)
+			returnValue = list[0];
+		return returnValue;
+	}
+	
+	/**
+	 * Returns the last element in the list.
+	 * <p>
+	 * This method will return the last value in the list. If there are no
+	 * values in the list, then the method will return -1.
+	 * 
+	 * @return	the last value in the list. If empty, then returns -1.
+	 */
+	public int last()
+	{
+		int returnValue = -1;
+		if (count > 0)
+			returnValue = list[count - 1];
+		return returnValue;
+	}
+	
+	/**
+	 * Returns the number of possible locations in the list;
+	 * <p>
+	 * This method will return all possible locations in the list whether or
+	 * not a value has been assigned to them.
+	 * 
+	 * @return	the number of possible locations in the list.
+	 */
+	public int size()
+	{
+		return list.length;
 	}
 }
